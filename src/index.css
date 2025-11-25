@@ -1,13 +1,108 @@
 body {
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(circle at top left, #eef6ff 0%, #fbfdff 100%);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.card {
+  border-radius: 18px;
+}
+
+.app-title {
+  color: #0b62d0;
+  text-shadow: 0 2px 6px rgba(11,98,208,0.08);
+}
+.small-muted {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.bg-orange {
+  background-color: #ff9800 !important; /* oranye */
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* ===========================
+   BGAN M2M Dashboard — Enhanced UI
+   (Global CSS)
+   =========================== */
+
+/* Main layout background */
+.dashboard-root {
+  background: linear-gradient(180deg, #eef7ff 0%, #ffffff 65%);
+  min-height: 100vh;
+  padding: 44px 20px;
+}
+
+/* Card styling */
+.card-rounded {
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(30, 50, 80, 0.08);
+}
+
+/* Signal meter */
+.signal-meter {
+  height: 18px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.signal-fill {
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.5s ease, background-color 0.3s ease;
+}
+
+/* APN table */
+.apn-table thead th {
+  background: #f7fbff;
+}
+
+/* Small muted text */
+.muted-small {
+  font-size: 0.88rem;
+  color: #6b7280;
+}
+
+/* Network status badges */
+.badge-soft {
+  padding: 0.45rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.status-connected {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.18);
+}
+
+.status-offline {
+  background: rgba(239, 68, 68, 0.08);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.14);
+}
+
+/* PDP network dot */
+.network-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Responsive grid override */
+@media (max-width: 720px) {
+  .desktop-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
