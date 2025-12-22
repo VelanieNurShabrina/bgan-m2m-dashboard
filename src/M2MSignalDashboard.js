@@ -27,6 +27,7 @@ export default function M2MSignalDashboard() {
 
   const [pdpIP, setPdpIP] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [pdpActive, setPdpActive] = useState(false);
 
   // UTILITIES
   const dbToPercent = (db) => {
@@ -92,7 +93,9 @@ export default function M2MSignalDashboard() {
 
       const pdpRes = await fetch(`${BASE_URL}/pdp-status`, { headers });
       const pdpData = await pdpRes.json();
-      setPdpIP(pdpData.pdp_ip || null);
+
+      setPdpActive(pdpData.pdp_active === true);
+      setPdpIP(pdpData.ip || null);
     } catch (err) {
       console.log("Fetch error:", err);
     }
@@ -175,6 +178,20 @@ export default function M2MSignalDashboard() {
     }
 
     // Refresh snapshot after action
+    setTimeout(fetchAll, 1500);
+  };
+
+  const handleDeactivatePDP = async () => {
+    try {
+      await fetch(`${BASE_URL}/pdp-deactivate`, {
+        method: "POST",
+        headers: { "ngrok-skip-browser-warning": "true" },
+      });
+    } catch (err) {
+      alert("❌ Connection error deactivating PDP.");
+    }
+
+    // biarin polling yang update status
     setTimeout(fetchAll, 1500);
   };
 
@@ -373,10 +390,10 @@ export default function M2MSignalDashboard() {
                 >
                   <span
                     className="network-dot"
-                    style={{ background: pdpIP ? "#16a34a" : "#ef4444" }}
+                    style={{ background: pdpActive ? "#16a34a" : "#ef4444" }}
                   />
                   <span className="fw-semibold">
-                    {pdpIP ? "Active" : "Not Active"}
+                    {pdpActive ? "Active" : "Not Active"}
                   </span>
                 </div>
 
@@ -389,6 +406,13 @@ export default function M2MSignalDashboard() {
                 >
                   <FaSyncAlt className="me-2" />
                   Activate PDP
+                </button>
+                <button
+                  className="btn btn-outline-danger w-100"
+                  onClick={handleDeactivatePDP}
+                  disabled={!pdpActive}
+                >
+                  Deactivate PDP
                 </button>
               </div>
             </div>
