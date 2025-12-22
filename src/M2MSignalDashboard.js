@@ -375,45 +375,62 @@ export default function M2MSignalDashboard() {
             </div>
 
             {/* RIGHT */}
+            {/* RIGHT */}
             <div>
-              <div className="card card-rounded p-3">
-                <div className="d-flex align-items-center mb-2">
+              <div className="card card-rounded p-3 shadow-sm">
+                <div className="d-flex align-items-center mb-3">
                   <FaGlobe className="me-2 text-info" />
                   <strong>PDP Session</strong>
                 </div>
 
-                <div className="muted-small">Status</div>
+                {/* STATUS */}
+                <div className="mb-2 muted-small">Status</div>
 
                 <div
                   className="d-flex align-items-center mb-3"
-                  style={{ gap: 8 }}
+                  style={{ gap: 10 }}
                 >
                   <span
-                    className="network-dot"
-                    style={{ background: pdpActive ? "#16a34a" : "#ef4444" }}
+                    style={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      backgroundColor: pdpActive ? "#22c55e" : "#f87171",
+                    }}
                   />
                   <span className="fw-semibold">
                     {pdpActive ? "Active" : "Not Active"}
                   </span>
                 </div>
 
-                <div className="muted-small">IP Address</div>
-                <div className="fw-semibold mb-3">{pdpIP || "—"}</div>
+                {/* IP */}
+                <div className="mb-2 muted-small">IP Address</div>
+                <div
+                  className="fw-semibold mb-4"
+                  style={{ fontFamily: "monospace", fontSize: 14 }}
+                >
+                  {pdpIP || "—"}
+                </div>
 
-                <button
-                  className="btn btn-success w-100"
-                  onClick={handleActivatePDP}
-                >
-                  <FaSyncAlt className="me-2" />
-                  Activate PDP
-                </button>
-                <button
-                  className="btn btn-outline-danger w-100"
-                  onClick={handleDeactivatePDP}
-                  disabled={!pdpActive}
-                >
-                  Deactivate PDP
-                </button>
+                {/* BUTTONS */}
+                <div className="d-grid gap-2">
+                  <button
+                    className="btn btn-success"
+                    onClick={handleActivatePDP}
+                    disabled={pdpActive}
+                  >
+                    <FaSyncAlt className="me-2" />
+                    Activate PDP
+                  </button>
+
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={handleDeactivatePDP}
+                    disabled={!pdpActive}
+                  >
+                    Deactivate PDP
+                  </button>
+                </div>
               </div>
             </div>
           </div>
