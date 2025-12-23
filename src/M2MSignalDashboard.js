@@ -298,7 +298,12 @@ export default function M2MSignalDashboard() {
                   <ResponsiveContainer width="100%" height={220}>
                     <LineChart data={signalHistory}>
                       <XAxis dataKey="timestamp" hide />
-                      <YAxis domain={[-110, -40]} tick={{ fontSize: 12 }} />
+                      <YAxis
+                        domain={[0, 100]}
+                        tick={{ fontSize: 12 }}
+                        unit=" dB"
+                      />
+
                       <Tooltip
                         labelFormatter={(label) => `Time: ${label}`}
                         formatter={(value) => [`${value} dB`, "Signal"]}
