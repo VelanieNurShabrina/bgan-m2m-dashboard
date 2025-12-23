@@ -28,6 +28,7 @@ export default function M2MSignalDashboard() {
   const [pdpIP, setPdpIP] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pdpActive, setPdpActive] = useState(false);
+  const [signalHistory, setSignalHistory] = useState([]);
 
   // UTILITIES
   const dbToPercent = (db) => {
@@ -102,6 +103,18 @@ export default function M2MSignalDashboard() {
     setLoading(false);
   };
 
+  const fetchSignalHistory = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/signal-history?limit=50`, {
+        headers: { "ngrok-skip-browser-warning": "true" },
+      });
+      const data = await res.json();
+      setSignalHistory(data);
+    } catch (err) {
+      console.log("History fetch error:", err);
+    }
+  };
+
   // INITIAL LOAD + INTERVAL
   useEffect(() => {
     fetchAll();
@@ -112,6 +125,12 @@ export default function M2MSignalDashboard() {
   const isConnected = signal !== null && !isNaN(signal);
   const pct = dbToPercent(signal);
   const sl = signalLabel(signal);
+
+  useEffect(() => {
+    fetchSignalHistory();
+    const t = setInterval(fetchSignalHistory, 30000); // 30 detik
+    return () => clearInterval(t);
+  }, []);
 
   // =============================
   //  APN SAVE (save saja, auth lewat PDP)
@@ -256,6 +275,20 @@ export default function M2MSignalDashboard() {
                   </div>
                 </div>
               </div>
+
+              {/* DEBUG SIGNAL HISTORY (sementara) */}
+              <pre
+                style={{
+                  fontSize: 11,
+                  maxHeight: 160,
+                  overflow: "auto",
+                  background: "#f9fafb",
+                  padding: 10,
+                  borderRadius: 6,
+                }}
+              >
+                {JSON.stringify(signalHistory, null, 2)}
+              </pre>
 
               {/* DEVICE INFO */}
               <div className="card card-rounded p-3 mb-3">
