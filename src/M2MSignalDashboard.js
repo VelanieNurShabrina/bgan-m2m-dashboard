@@ -8,6 +8,15 @@ import {
   FaSyncAlt,
 } from "react-icons/fa";
 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
 export default function M2MSignalDashboard() {
   const BASE_URL =
     "https://nonrelated-spirometrical-ashley.ngrok-free.dev/api/m2m";
@@ -276,19 +285,36 @@ export default function M2MSignalDashboard() {
                 </div>
               </div>
 
-              {/* DEBUG SIGNAL HISTORY (sementara) */}
-              <pre
-                style={{
-                  fontSize: 11,
-                  maxHeight: 160,
-                  overflow: "auto",
-                  background: "#f9fafb",
-                  padding: 10,
-                  borderRadius: 6,
-                }}
-              >
-                {JSON.stringify(signalHistory, null, 2)}
-              </pre>
+              {/* SIGNAL HISTORY */}
+              <div className="card card-rounded p-3 mb-3">
+                <div className="d-flex align-items-center mb-2">
+                  <FaSignal className="me-2 text-success" />
+                  <strong>Signal History</strong>
+                </div>
+
+                {signalHistory.length === 0 ? (
+                  <div className="text-muted small">No history data</div>
+                ) : (
+                  <ResponsiveContainer width="100%" height={220}>
+                    <LineChart data={signalHistory}>
+                      <XAxis dataKey="timestamp" hide />
+                      <YAxis domain={[-110, -40]} tick={{ fontSize: 12 }} />
+                      <Tooltip
+                        labelFormatter={(label) => `Time: ${label}`}
+                        formatter={(value) => [`${value} dB`, "Signal"]}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="signal"
+                        stroke="#22c55e"
+                        strokeWidth={2}
+                        dot={false}
+                        isAnimationActive={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
 
               {/* DEVICE INFO */}
               <div className="card card-rounded p-3 mb-3">
