@@ -238,6 +238,7 @@ export default function M2MSignalDashboard() {
               <div className="muted-small">Realtime Satellite Monitoring</div>
             </div>
           </div>
+
           <span
             className={`badge-soft ${
               isConnected ? "status-connected" : "status-offline"
@@ -247,112 +248,79 @@ export default function M2MSignalDashboard() {
           </span>
         </div>
 
-        {/* ================= SIGNAL + PDP ================= */}
-        <div
-          className="card card-rounded p-4 mb-4"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 320px",
-            gap: 20,
-          }}
-        >
-          {/* SIGNAL CARD */}
-          <div>
-            <div className="d-flex align-items-center mb-2">
-              <FaSignal className="me-2" />
-              <strong>Signal</strong>
+        {/* SIGNAL HISTORY + SIGNAL STRENGTH */}
+        <div className="card card-rounded p-4 mb-4">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 260px",
+              gap: 20,
+              alignItems: "center",
+            }}
+          >
+            {/* LEFT - CHART */}
+            <div>
+              <div className="d-flex align-items-center mb-3">
+                <FaSignal className="me-2 text-success" />
+                <strong>Signal History</strong>
+              </div>
+
+              <ResponsiveContainer width="100%" height={260}>
+                <LineChart data={signalHistory}>
+                  <XAxis
+                    dataKey="timestamp"
+                    tickFormatter={(v) => v.slice(11, 19)} // HH:MM:SS
+                    minTickGap={40}
+                  />
+                  <YAxis
+                    domain={[
+                      (min) => Math.floor(min - 5),
+                      (max) => Math.ceil(max + 5),
+                    ]}
+                    unit=" dB"
+                  />
+                  <Tooltip
+                    labelFormatter={(l) => `Time: ${l.slice(11, 19)}`}
+                    formatter={(v) => [`${v} dB`, "Signal"]}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="signal"
+                    stroke="#22c55e"
+                    strokeWidth={2}
+                    dot={false}
+                    isAnimationActive={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
 
-            {/* Signal Strength */}
-            <div className="d-flex justify-content-between align-items-end mb-3">
-              <div>
-                <div style={{ fontSize: 28, fontWeight: 700 }}>
-                  {signal !== null ? `${signal} dB` : "—"}
-                </div>
-                <div className="muted-small">{sl.text}</div>
+            {/* RIGHT - SIGNAL STRENGTH */}
+            <div>
+              <div className="d-flex align-items-center mb-2">
+                <FaSignal className="me-2" />
+                <strong>Signal Strength</strong>
               </div>
-              <div className="signal-meter" style={{ width: 220 }}>
+
+              <div style={{ fontSize: 28, fontWeight: 700 }}>
+                {signal ? `${signal} dB` : "—"}
+              </div>
+              <div className="muted-small mb-3">{sl.text}</div>
+
+              <div className="signal-meter">
                 <div
                   className="signal-fill"
-                  style={{ width: `${pct}%`, backgroundColor: sl.color }}
+                  style={{
+                    width: `${pct}%`,
+                    backgroundColor: sl.color,
+                  }}
                 />
-              </div>
-            </div>
-
-            {/* Signal History */}
-            <ResponsiveContainer width="100%" height={260}>
-              <LineChart data={signalHistory}>
-                <XAxis
-                  dataKey="timestamp"
-                  tickFormatter={(v) => v.slice(11, 19)} // HH:MM:SS
-                  minTickGap={50}
-                />
-                <YAxis
-                  domain={[
-                    (min) => Math.floor(min - 5),
-                    (max) => Math.ceil(max + 5),
-                  ]}
-                  unit=" dB"
-                />
-                <Tooltip
-                  labelFormatter={(v) => `Time: ${v.slice(11, 19)}`}
-                  formatter={(v) => [`${v} dB`, "Signal"]}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="signal"
-                  stroke="#22c55e"
-                  strokeWidth={2}
-                  dot={false}
-                  isAnimationActive={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* PDP SESSION */}
-          <div>
-            <div className="card card-rounded p-3 h-100">
-              <div className="d-flex align-items-center mb-2">
-                <FaGlobe className="me-2 text-info" />
-                <strong>PDP Session</strong>
-              </div>
-
-              <div className="mt-3">
-                <div className="muted-small">Status</div>
-                <div className="fw-semibold">
-                  {pdpActive ? "Active" : "Not Active"}
-                </div>
-              </div>
-
-              <div className="mt-2">
-                <div className="muted-small">IP Address</div>
-                <div className="fw-semibold">{pdpIP || "—"}</div>
-              </div>
-
-              <div className="d-grid gap-2 mt-4">
-                <button
-                  className="btn btn-success"
-                  disabled={pdpActive}
-                  onClick={handleActivatePDP}
-                >
-                  <FaSyncAlt className="me-2" />
-                  Activate PDP
-                </button>
-
-                <button
-                  className="btn btn-outline-danger"
-                  disabled={!pdpActive}
-                  onClick={handleDeactivatePDP}
-                >
-                  Deactivate PDP
-                </button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* ================= DEVICE & NETWORK ================= */}
+        {/* DEVICE & NETWORK */}
         <div className="card card-rounded p-3 mb-4">
           <div className="d-flex align-items-center mb-2">
             <FaSatelliteDish className="me-2 text-primary" />
@@ -384,11 +352,43 @@ export default function M2MSignalDashboard() {
           </div>
         </div>
 
-        {/* ================= APN + PDP ================= */}
+        {/* CONNECTION & APN */}
         <div className="card card-rounded p-4 mb-4">
+          <div className="d-flex align-items-center mb-3">
+            <FaGlobe className="me-2 text-info" />
+            <strong>Connection & APN</strong>
+          </div>
+
+          {/* PDP SESSION */}
+          <div className="mb-4">
+            <div className="muted-small">PDP Status</div>
+            <div className="fw-semibold mb-1">
+              {pdpActive ? "Active" : "Not Active"}
+            </div>
+            <div className="muted-small">IP Address</div>
+            <div className="fw-semibold mb-2">{pdpIP || "—"}</div>
+
+            <div className="d-flex gap-2">
+              <button
+                className="btn btn-success btn-sm"
+                disabled={pdpActive}
+                onClick={handleActivatePDP}
+              >
+                <FaSyncAlt className="me-2" />
+                Activate PDP
+              </button>
+              <button
+                className="btn btn-outline-danger btn-sm"
+                disabled={!pdpActive}
+                onClick={handleDeactivatePDP}
+              >
+                Deactivate PDP
+              </button>
+            </div>
+          </div>
+
           {/* APN PROFILES */}
           <strong className="mb-2 d-block">📡 APN Profiles</strong>
-
           <table className="table table-sm apn-table mb-3">
             <thead>
               <tr>
@@ -418,12 +418,9 @@ export default function M2MSignalDashboard() {
             </tbody>
           </table>
 
-          <hr />
-
           {/* APN SETTINGS */}
-          <strong className="mb-2 d-block">⚙️ APN Settings (Save Only)</strong>
-
-          <div className="d-flex flex-column gap-2 mb-3">
+          <strong className="mb-2 d-block">⚙️ APN Settings</strong>
+          <div className="d-flex flex-column gap-2">
             <input
               className="form-control form-control-sm"
               placeholder="APN Name"
@@ -446,9 +443,6 @@ export default function M2MSignalDashboard() {
             <button className="btn btn-primary btn-sm" onClick={handleSetAPN}>
               Save APN (Store Only)
             </button>
-            <div className="text-muted small">
-              APN only stored. Use “Activate PDP” to authenticate.
-            </div>
           </div>
         </div>
 
