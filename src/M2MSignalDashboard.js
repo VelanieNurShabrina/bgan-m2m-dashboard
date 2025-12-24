@@ -342,6 +342,107 @@ export default function M2MSignalDashboard() {
             </LineChart>
           </ResponsiveContainer>
         </div>
+        <div className="card card-rounded p-3 mb-3">
+          <div className="d-flex align-items-center mb-2">
+            <FaSatelliteDish className="me-2 text-primary" />
+            <strong>Device & Network</strong>
+          </div>
+
+          <div className="row">
+            <div className="col-6 mb-2">
+              <div className="muted-small">Satellite</div>
+              <div className="fw-semibold">{satellite}</div>
+            </div>
+
+            <div className="col-6 mb-2">
+              <div className="muted-small">IMEI</div>
+              <div className="fw-semibold">{imei}</div>
+            </div>
+
+            <div className="col-6 mb-2">
+              <div className="muted-small">IMSI</div>
+              <div className="fw-semibold">{imsi}</div>
+            </div>
+
+            <div className="col-6 mb-2">
+              <div className="muted-small">Network Status</div>
+              <div className={`fw-semibold ${NETWORK_COLORS[network]}`}>
+                {network}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="card card-rounded p-3 mb-3">
+          <strong className="mb-2 d-flex align-items-center">
+            📡 APN Profiles
+          </strong>
+
+          <table className="table table-sm apn-table mb-2">
+            <thead>
+              <tr>
+                <th>CID</th>
+                <th>Type</th>
+                <th>APN</th>
+                <th>Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {apnList.length ? (
+                apnList.map((p, i) => (
+                  <tr key={i}>
+                    <td>{p.cid}</td>
+                    <td>{p.type}</td>
+                    <td>{p.apn}</td>
+                    <td>{p.address}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center text-muted">
+                    No APN configured
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="card card-rounded p-3 mb-4">
+          <strong className="mb-2 d-flex align-items-center">
+            ⚙️ APN Settings (Save Only)
+          </strong>
+
+          <div className="d-flex flex-column gap-2">
+            <input
+              className="form-control form-control-sm"
+              placeholder="APN Name"
+              value={newAPN}
+              onChange={(e) => setNewAPN(e.target.value)}
+            />
+
+            <input
+              className="form-control form-control-sm"
+              placeholder="Username"
+              value={apnUser}
+              onChange={(e) => setApnUser(e.target.value)}
+            />
+
+            <input
+              type="password"
+              className="form-control form-control-sm"
+              placeholder="Password"
+              value={apnPass}
+              onChange={(e) => setApnPass(e.target.value)}
+            />
+
+            <button className="btn btn-primary btn-sm" onClick={handleSetAPN}>
+              Save APN (Store Only)
+            </button>
+
+            <div className="text-muted small">
+              APN only stored. Use “Activate PDP” to authenticate.
+            </div>
+          </div>
+        </div>
 
         <div className="text-end muted-small">
           Last Update: {time} {loading && "(refreshing...)"}
