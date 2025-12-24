@@ -234,7 +234,7 @@ export default function M2MSignalDashboard() {
           <div className="d-flex align-items-center">
             <FaBroadcastTower size={26} className="me-2 text-primary" />
             <div>
-              <h3 className="mb-0 fw-bold">BGAN M2M Dashboard</h3>
+              <h3 className="mb-0 fw-bold">BGAN M2M</h3>
               <div className="muted-small">Realtime Satellite Monitoring</div>
             </div>
           </div>
@@ -247,7 +247,7 @@ export default function M2MSignalDashboard() {
           </span>
         </div>
 
-        {/* TOP GRID */}
+        {/* ================= SIGNAL + PDP ================= */}
         <div
           className="card card-rounded p-4 mb-4"
           style={{
@@ -256,35 +256,67 @@ export default function M2MSignalDashboard() {
             gap: 20,
           }}
         >
-          {/* LEFT */}
+          {/* SIGNAL CARD */}
           <div>
-            <div className="card card-rounded p-3 mb-3">
-              <div className="d-flex align-items-center">
-                <FaSignal className="me-2" />
-                <strong>Signal Strength</strong>
+            <div className="d-flex align-items-center mb-2">
+              <FaSignal className="me-2" />
+              <strong>Signal</strong>
+            </div>
+
+            {/* Signal Strength */}
+            <div className="d-flex justify-content-between align-items-end mb-3">
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 700 }}>
+                  {signal !== null ? `${signal} dB` : "—"}
+                </div>
+                <div className="muted-small">{sl.text}</div>
               </div>
-              <div className="d-flex justify-content-between align-items-end mt-2">
-                <div>
-                  <div style={{ fontSize: 28, fontWeight: 700 }}>
-                    {signal ? `${signal} dB` : "—"}
-                  </div>
-                  <div className="muted-small">{sl.text}</div>
-                </div>
-                <div className="signal-meter" style={{ width: 220 }}>
-                  <div
-                    className="signal-fill"
-                    style={{ width: `${pct}%`, backgroundColor: sl.color }}
-                  />
-                </div>
+              <div className="signal-meter" style={{ width: 220 }}>
+                <div
+                  className="signal-fill"
+                  style={{ width: `${pct}%`, backgroundColor: sl.color }}
+                />
               </div>
             </div>
+
+            {/* Signal History */}
+            <ResponsiveContainer width="100%" height={260}>
+              <LineChart data={signalHistory}>
+                <XAxis
+                  dataKey="timestamp"
+                  tickFormatter={(v) => v.slice(11, 19)} // HH:MM:SS
+                  minTickGap={50}
+                />
+                <YAxis
+                  domain={[
+                    (min) => Math.floor(min - 5),
+                    (max) => Math.ceil(max + 5),
+                  ]}
+                  unit=" dB"
+                />
+                <Tooltip
+                  labelFormatter={(v) => `Time: ${v.slice(11, 19)}`}
+                  formatter={(v) => [`${v} dB`, "Signal"]}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="signal"
+                  stroke="#22c55e"
+                  strokeWidth={2}
+                  dot={false}
+                  isAnimationActive={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
 
-          {/* RIGHT */}
+          {/* PDP SESSION */}
           <div>
-            <div className="card card-rounded p-3">
-              <FaGlobe className="me-2 text-info" />
-              <strong>PDP Session</strong>
+            <div className="card card-rounded p-3 h-100">
+              <div className="d-flex align-items-center mb-2">
+                <FaGlobe className="me-2 text-info" />
+                <strong>PDP Session</strong>
+              </div>
 
               <div className="mt-3">
                 <div className="muted-small">Status</div>
@@ -298,7 +330,7 @@ export default function M2MSignalDashboard() {
                 <div className="fw-semibold">{pdpIP || "—"}</div>
               </div>
 
-              <div className="d-grid gap-2 mt-3">
+              <div className="d-grid gap-2 mt-4">
                 <button
                   className="btn btn-success"
                   disabled={pdpActive}
@@ -307,6 +339,7 @@ export default function M2MSignalDashboard() {
                   <FaSyncAlt className="me-2" />
                   Activate PDP
                 </button>
+
                 <button
                   className="btn btn-outline-danger"
                   disabled={!pdpActive}
@@ -319,43 +352,8 @@ export default function M2MSignalDashboard() {
           </div>
         </div>
 
-        {/* FULL WIDTH CHART */}
-        <div className="card card-rounded p-4 mb-4">
-          <div className="d-flex align-items-center mb-3">
-            <FaSignal className="me-2 text-success" />
-            <strong>Signal History</strong>
-          </div>
-
-          <ResponsiveContainer width="100%" height={320}>
-            <LineChart data={signalHistory}>
-              <XAxis
-                dataKey="timestamp"
-                tickFormatter={(v) => v.slice(11, 19)} // HH:MM:SS
-                minTickGap={50}
-              />
-              <YAxis
-                domain={[
-                  (min) => Math.floor(min - 5),
-                  (max) => Math.ceil(max + 5),
-                ]}
-                unit=" dB"
-              />
-              <Tooltip
-                labelFormatter={(label) => `Time: ${label.slice(11, 19)}`}
-                formatter={(v) => [`${v} dB`, "Signal"]}
-              />
-              <Line
-                type="monotone"
-                dataKey="signal"
-                stroke="#22c55e"
-                strokeWidth={2}
-                dot={false}
-                isAnimationActive={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="card card-rounded p-3 mb-3">
+        {/* ================= DEVICE & NETWORK ================= */}
+        <div className="card card-rounded p-3 mb-4">
           <div className="d-flex align-items-center mb-2">
             <FaSatelliteDish className="me-2 text-primary" />
             <strong>Device & Network</strong>
@@ -385,12 +383,13 @@ export default function M2MSignalDashboard() {
             </div>
           </div>
         </div>
-        <div className="card card-rounded p-3 mb-3">
-          <strong className="mb-2 d-flex align-items-center">
-            📡 APN Profiles
-          </strong>
 
-          <table className="table table-sm apn-table mb-2">
+        {/* ================= APN + PDP ================= */}
+        <div className="card card-rounded p-4 mb-4">
+          {/* APN PROFILES */}
+          <strong className="mb-2 d-block">📡 APN Profiles</strong>
+
+          <table className="table table-sm apn-table mb-3">
             <thead>
               <tr>
                 <th>CID</th>
@@ -418,27 +417,25 @@ export default function M2MSignalDashboard() {
               )}
             </tbody>
           </table>
-        </div>
-        <div className="card card-rounded p-3 mb-4">
-          <strong className="mb-2 d-flex align-items-center">
-            ⚙️ APN Settings (Save Only)
-          </strong>
 
-          <div className="d-flex flex-column gap-2">
+          <hr />
+
+          {/* APN SETTINGS */}
+          <strong className="mb-2 d-block">⚙️ APN Settings (Save Only)</strong>
+
+          <div className="d-flex flex-column gap-2 mb-3">
             <input
               className="form-control form-control-sm"
               placeholder="APN Name"
               value={newAPN}
               onChange={(e) => setNewAPN(e.target.value)}
             />
-
             <input
               className="form-control form-control-sm"
               placeholder="Username"
               value={apnUser}
               onChange={(e) => setApnUser(e.target.value)}
             />
-
             <input
               type="password"
               className="form-control form-control-sm"
@@ -446,11 +443,9 @@ export default function M2MSignalDashboard() {
               value={apnPass}
               onChange={(e) => setApnPass(e.target.value)}
             />
-
             <button className="btn btn-primary btn-sm" onClick={handleSetAPN}>
               Save APN (Store Only)
             </button>
-
             <div className="text-muted small">
               APN only stored. Use “Activate PDP” to authenticate.
             </div>
