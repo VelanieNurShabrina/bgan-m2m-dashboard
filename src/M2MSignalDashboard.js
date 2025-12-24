@@ -328,9 +328,22 @@ export default function M2MSignalDashboard() {
 
           <ResponsiveContainer width="100%" height={320}>
             <LineChart data={signalHistory}>
-              <XAxis dataKey="timestamp" minTickGap={30} />
-              <YAxis domain={[0, 100]} unit=" dB" />
-              <Tooltip formatter={(v) => [`${v} dB`, "Signal"]} />
+              <XAxis
+                dataKey="timestamp"
+                tickFormatter={(v) => v.slice(11, 19)} // HH:MM:SS
+                minTickGap={50}
+              />
+              <YAxis
+                domain={[
+                  (min) => Math.floor(min - 5),
+                  (max) => Math.ceil(max + 5),
+                ]}
+                unit=" dB"
+              />
+              <Tooltip
+                labelFormatter={(label) => `Time: ${label.slice(11, 19)}`}
+                formatter={(v) => [`${v} dB`, "Signal"]}
+              />
               <Line
                 type="monotone"
                 dataKey="signal"
