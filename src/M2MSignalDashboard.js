@@ -297,24 +297,41 @@ export default function M2MSignalDashboard() {
 
             {/* RIGHT - SIGNAL STRENGTH */}
             <div>
-              <div className="d-flex align-items-center mb-2">
-                <FaSignal className="me-2" />
-                <strong>Signal Strength</strong>
-              </div>
+              <div className="card card-rounded p-3 mb-3">
+                <div className="d-flex align-items-center mb-2">
+                  <FaSignal className="me-2 text-success" />
+                  <strong>Signal Strength</strong>
+                </div>
 
-              <div style={{ fontSize: 28, fontWeight: 700 }}>
-                {signal ? `${signal} dB` : "—"}
-              </div>
-              <div className="muted-small mb-3">{sl.text}</div>
+                <div style={{ fontSize: 32, fontWeight: 700 }}>
+                  {signal !== null && !isNaN(signal) ? `${signal} dB` : "—"}
+                </div>
 
-              <div className="signal-meter">
                 <div
-                  className="signal-fill"
+                  className="fw-semibold"
+                  style={{ color: sl.color, marginBottom: 8 }}
+                >
+                  {sl.text}
+                </div>
+
+                {/* optional: thin indicator bar */}
+                <div
                   style={{
-                    width: `${pct}%`,
-                    backgroundColor: sl.color,
+                    height: 6,
+                    width: "100%",
+                    background: "#e5e7eb",
+                    borderRadius: 4,
+                    overflow: "hidden",
                   }}
-                />
+                >
+                  <div
+                    style={{
+                      width: `${Math.min(pct, 100)}%`,
+                      height: "100%",
+                      background: sl.color,
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
