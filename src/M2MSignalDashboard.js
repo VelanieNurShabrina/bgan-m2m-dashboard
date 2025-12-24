@@ -227,10 +227,10 @@ export default function M2MSignalDashboard() {
   //  UI
   // =============================
   return (
-    <div className="dashboard-root d-flex justify-content-center align-items-start">
-      <div style={{ width: "100%", maxWidth: 980 }}>
+    <div className="dashboard-root d-flex justify-content-center">
+      <div style={{ width: "100%", maxWidth: 1100 }}>
         {/* HEADER */}
-        <div className="d-flex align-items-center justify-content-between mb-3">
+        <div className="d-flex justify-content-between align-items-center mb-3">
           <div className="d-flex align-items-center">
             <FaBroadcastTower size={26} className="me-2 text-primary" />
             <div>
@@ -238,274 +238,113 @@ export default function M2MSignalDashboard() {
               <div className="muted-small">Realtime Satellite Monitoring</div>
             </div>
           </div>
-
-          <div className="text-end">
-            <span
-              className={`badge-soft ${
-                isConnected ? "status-connected" : "status-offline"
-              }`}
-            >
-              {isConnected ? "Connected" : "Disconnected"}
-            </span>
-          </div>
-        </div>
-
-        {/* MAIN CONTENT */}
-        <div className="card card-rounded p-4 mb-4 bg-white">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 320px",
-              gap: 20,
-            }}
+          <span
+            className={`badge-soft ${
+              isConnected ? "status-connected" : "status-offline"
+            }`}
           >
-            {/* LEFT */}
-            <div>
-              {/* SIGNAL */}
-              <div className="card card-rounded p-3 mb-3">
-                <div className="d-flex align-items-center">
-                  <FaSignal className="me-2" />
-                  <strong>Signal Strength</strong>
-                </div>
+            {isConnected ? "Connected" : "Disconnected"}
+          </span>
+        </div>
 
-                <div className="d-flex justify-content-between align-items-end mt-2">
-                  <div>
-                    <div style={{ fontSize: 28, fontWeight: 700 }}>
-                      {signal !== null && !isNaN(signal) ? `${signal} dB` : "—"}
-                    </div>
-                    <div className="muted-small">{sl.text}</div>
-                  </div>
-
-                  <div className="signal-meter" style={{ width: 220 }}>
-                    <div
-                      className="signal-fill"
-                      style={{ width: `${pct}%`, backgroundColor: sl.color }}
-                    />
-                  </div>
-                </div>
+        {/* TOP GRID */}
+        <div
+          className="card card-rounded p-4 mb-4"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 320px",
+            gap: 20,
+          }}
+        >
+          {/* LEFT */}
+          <div>
+            <div className="card card-rounded p-3 mb-3">
+              <div className="d-flex align-items-center">
+                <FaSignal className="me-2" />
+                <strong>Signal Strength</strong>
               </div>
-
-              {/* SIGNAL HISTORY */}
-              <div className="card card-rounded p-3 mb-3">
-                <div className="d-flex align-items-center mb-2">
-                  <FaSignal className="me-2 text-success" />
-                  <strong>Signal History</strong>
+              <div className="d-flex justify-content-between align-items-end mt-2">
+                <div>
+                  <div style={{ fontSize: 28, fontWeight: 700 }}>
+                    {signal ? `${signal} dB` : "—"}
+                  </div>
+                  <div className="muted-small">{sl.text}</div>
                 </div>
-
-                {signalHistory.length === 0 ? (
-                  <div className="text-muted small">No history data</div>
-                ) : (
-                  <ResponsiveContainer width="100%" height={220}>
-                    <LineChart data={signalHistory}>
-                      <XAxis dataKey="timestamp" hide />
-                      <YAxis
-                        domain={[0, 100]}
-                        tick={{ fontSize: 12 }}
-                        unit=" dB"
-                      />
-
-                      <Tooltip
-                        labelFormatter={(label) => `Time: ${label}`}
-                        formatter={(value) => [`${value} dB`, "Signal"]}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="signal"
-                        stroke="#22c55e"
-                        strokeWidth={2}
-                        dot={false}
-                        isAnimationActive={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                )}
-              </div>
-
-              {/* DEVICE INFO */}
-              <div className="card card-rounded p-3 mb-3">
-                <div className="d-flex align-items-center mb-2">
-                  <FaSatelliteDish className="me-2 text-primary" />
-                  <strong>Device & Network</strong>
-                </div>
-
-                <div className="row">
-                  <div className="col-6 mb-2">
-                    <div className="muted-small">Satellite</div>
-                    <div className="fw-semibold">{satellite}</div>
-                  </div>
-
-                  <div className="col-6 mb-2">
-                    <div className="muted-small">IMEI</div>
-                    <div className="fw-semibold">{imei}</div>
-                  </div>
-
-                  <div className="col-6 mb-2">
-                    <div className="muted-small">IMSI</div>
-                    <div className="fw-semibold">{imsi}</div>
-                  </div>
-
-                  <div className="col-6 mb-2">
-                    <div className="muted-small">Network Status</div>
-                    <div className={`fw-semibold ${NETWORK_COLORS[network]}`}>
-                      {network}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* APN TABLE */}
-              <div className="card card-rounded p-3 mb-3">
-                <strong className="mb-2 d-flex align-items-center">
-                  📡 APN Profiles
-                </strong>
-
-                <table className="table table-sm apn-table mb-2">
-                  <thead>
-                    <tr>
-                      <th>CID</th>
-                      <th>Type</th>
-                      <th>APN</th>
-                      <th>Address</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {apnList.length ? (
-                      apnList.map((p, i) => (
-                        <tr key={i}>
-                          <td>{p.cid}</td>
-                          <td>{p.type}</td>
-                          <td>{p.apn}</td>
-                          <td>{p.address}</td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="4" className="text-center text-muted">
-                          No APN configured
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* SAVE APN */}
-              <div className="card card-rounded p-3">
-                <strong className="mb-2 d-flex align-items-center">
-                  ⚙️ APN Settings (Save Only)
-                </strong>
-
-                <div className="d-flex flex-column gap-2">
-                  <input
-                    className="form-control form-control-sm"
-                    placeholder="APN Name"
-                    value={newAPN}
-                    onChange={(e) => setNewAPN(e.target.value)}
-                    autoComplete="off"
-                    name="apnField"
+                <div className="signal-meter" style={{ width: 220 }}>
+                  <div
+                    className="signal-fill"
+                    style={{ width: `${pct}%`, backgroundColor: sl.color }}
                   />
-
-                  <input
-                    className="form-control form-control-sm"
-                    placeholder="Username"
-                    value={apnUser}
-                    onChange={(e) => setApnUser(e.target.value)}
-                    autoComplete="new-password"
-                    name="apnUserField"
-                  />
-
-                  <input
-                    type="password"
-                    className="form-control form-control-sm"
-                    placeholder="Password"
-                    value={apnPass}
-                    onChange={(e) => setApnPass(e.target.value)}
-                    autoComplete="new-password"
-                    name="apnPassField"
-                  />
-
-                  <button
-                    className="btn btn-primary btn-sm"
-                    onClick={handleSetAPN}
-                  >
-                    Save APN (Store Only)
-                  </button>
-
-                  <div className="text-muted small">
-                    APN only stored. Use “Activate PDP” to authenticate.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT */}
-            {/* RIGHT */}
-            <div>
-              <div className="card card-rounded p-3 shadow-sm">
-                <div className="d-flex align-items-center mb-3">
-                  <FaGlobe className="me-2 text-info" />
-                  <strong>PDP Session</strong>
-                </div>
-
-                {/* STATUS */}
-                <div className="mb-2 muted-small">Status</div>
-
-                <div
-                  className="d-flex align-items-center mb-3"
-                  style={{ gap: 10 }}
-                >
-                  <span
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      backgroundColor: pdpActive ? "#22c55e" : "#f87171",
-                    }}
-                  />
-                  <span className="fw-semibold">
-                    {pdpActive ? "Active" : "Not Active"}
-                  </span>
-                </div>
-
-                {/* IP */}
-                <div className="mb-2 muted-small">IP Address</div>
-                <div
-                  className="fw-semibold mb-4"
-                  style={{ fontFamily: "monospace", fontSize: 14 }}
-                >
-                  {pdpIP || "—"}
-                </div>
-
-                {/* BUTTONS */}
-                <div className="d-grid gap-2">
-                  <button
-                    className="btn btn-success"
-                    onClick={handleActivatePDP}
-                    disabled={pdpActive}
-                  >
-                    <FaSyncAlt className="me-2" />
-                    Activate PDP
-                  </button>
-
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={handleDeactivatePDP}
-                    disabled={!pdpActive}
-                  >
-                    Deactivate PDP
-                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="text-end muted-small mt-3">
-            Last Update: {time} {loading && "(refreshing...)"}
+          {/* RIGHT */}
+          <div>
+            <div className="card card-rounded p-3">
+              <FaGlobe className="me-2 text-info" />
+              <strong>PDP Session</strong>
+
+              <div className="mt-3">
+                <div className="muted-small">Status</div>
+                <div className="fw-semibold">
+                  {pdpActive ? "Active" : "Not Active"}
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <div className="muted-small">IP Address</div>
+                <div className="fw-semibold">{pdpIP || "—"}</div>
+              </div>
+
+              <div className="d-grid gap-2 mt-3">
+                <button
+                  className="btn btn-success"
+                  disabled={pdpActive}
+                  onClick={handleActivatePDP}
+                >
+                  <FaSyncAlt className="me-2" />
+                  Activate PDP
+                </button>
+                <button
+                  className="btn btn-outline-danger"
+                  disabled={!pdpActive}
+                  onClick={handleDeactivatePDP}
+                >
+                  Deactivate PDP
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="text-center muted-small">
-          © BGAN M2M Dashboard by Velanie
+        {/* FULL WIDTH CHART */}
+        <div className="card card-rounded p-4 mb-4">
+          <div className="d-flex align-items-center mb-3">
+            <FaSignal className="me-2 text-success" />
+            <strong>Signal History</strong>
+          </div>
+
+          <ResponsiveContainer width="100%" height={320}>
+            <LineChart data={signalHistory}>
+              <XAxis dataKey="timestamp" minTickGap={30} />
+              <YAxis domain={[0, 100]} unit=" dB" />
+              <Tooltip formatter={(v) => [`${v} dB`, "Signal"]} />
+              <Line
+                type="monotone"
+                dataKey="signal"
+                stroke="#22c55e"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="text-end muted-small">
+          Last Update: {time} {loading && "(refreshing...)"}
         </div>
       </div>
     </div>
