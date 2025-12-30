@@ -190,28 +190,32 @@ export default function M2MSignalDashboard() {
     setPdpLoading(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/pdp-activate`, {
+      await fetch(`${BASE_URL}/pdp-activate`, {
+        headers: { "ngrok-skip-browser-warning": "true" },
+      });
+    } catch (err) {
+      alert("❌ PDP activation error");
+    }
+
+    // polling PDP sampai IP muncul
+    const poll = async () => {
+      const res = await fetch(`${BASE_URL}/pdp-status`, {
         headers: { "ngrok-skip-browser-warning": "true" },
       });
       const data = await res.json();
 
-      if (!res.ok || !data.success) {
-        alert(
-          `❌ PDP activation failed.\nReason: ${
-            data.message || "Unknown error"
-          }`
-        );
-      }
-    } catch (err) {
-      alert("❌ Connection error activating PDP.");
-    }
+      setPdpActive(data.pdp_active);
+      setPdpIP(data.ip || null);
 
-    // refresh bertahap (modem delay)
-    setTimeout(fetchAll, 1500);
-    setTimeout(() => {
-      fetchAll();
-      setPdpLoading(false);
-    }, 3500);
+      if (data.ip) {
+        setPdpLoading(false);
+        return;
+      }
+
+      setTimeout(poll, 1500);
+    };
+
+    poll();
   };
 
   const handleDeactivatePDP = async () => {
