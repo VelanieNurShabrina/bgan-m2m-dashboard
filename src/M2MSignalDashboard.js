@@ -38,6 +38,7 @@ export default function M2MSignalDashboard() {
   const [loading, setLoading] = useState(false);
   const [pdpActive, setPdpActive] = useState(false);
   const [signalHistory, setSignalHistory] = useState([]);
+  const [pdpLoading, setPdpLoading] = useState(false);
 
   // UTILITIES
   const dbToPercent = (db) => {
@@ -186,15 +187,15 @@ export default function M2MSignalDashboard() {
   //  PDP ACTIVATE
   // =============================
   const handleActivatePDP = async () => {
+    setPdpLoading(true);
+
     try {
       const res = await fetch(`${BASE_URL}/pdp-activate`, {
         headers: { "ngrok-skip-browser-warning": "true" },
       });
       const data = await res.json();
 
-      if (res.ok && data.success) {
-        alert(`✅ PDP Activated!\nIP: ${data.ip}`);
-      } else {
+      if (!res.ok || !data.success) {
         alert(
           `❌ PDP activation failed.\nReason: ${
             data.message || "Unknown error"
@@ -205,12 +206,17 @@ export default function M2MSignalDashboard() {
       alert("❌ Connection error activating PDP.");
     }
 
-    // Refresh snapshot after action
+    // refresh bertahap (modem delay)
     setTimeout(fetchAll, 1500);
-    setTimeout(fetchAll, 3500);
+    setTimeout(() => {
+      fetchAll();
+      setPdpLoading(false);
+    }, 3500);
   };
 
   const handleDeactivatePDP = async () => {
+    setPdpLoading(true);
+
     try {
       await fetch(`${BASE_URL}/pdp-deactivate`, {
         method: "POST",
@@ -220,8 +226,10 @@ export default function M2MSignalDashboard() {
       alert("❌ Connection error deactivating PDP.");
     }
 
-    // biarin polling yang update status
-    setTimeout(fetchAll, 1500);
+    setTimeout(() => {
+      fetchAll();
+      setPdpLoading(false);
+    }, 2000);
   };
 
   // =============================
@@ -382,23 +390,30 @@ export default function M2MSignalDashboard() {
           <div className="mb-4">
             <div className="muted-small">PDP Status</div>
             <div className="fw-semibold mb-1">
-              {pdpActive ? "Active" : "Not Active"}
+              {pdpLoading
+                ? "Processing..."
+                : pdpActive
+                ? "Active"
+                : "Not Active"}
             </div>
             <div className="muted-small">IP Address</div>
-            <div className="fw-semibold mb-2">{pdpIP || "—"}</div>
+            <div className="fw-semibold mb-2">
+              {pdpLoading ? "Assigning IP..." : pdpIP || "—"}
+            </div>
 
             <div className="d-flex gap-2">
               <button
                 className="btn btn-success btn-sm"
-                disabled={pdpActive}
+                disabled={pdpActive || pdpLoading}
                 onClick={handleActivatePDP}
               >
-                <FaSyncAlt className="me-2" />
+                <FaSyncAlt className={`me-2 ${pdpLoading ? "spin" : ""}`} />
                 Activate PDP
               </button>
+
               <button
                 className="btn btn-outline-danger btn-sm"
-                disabled={!pdpActive}
+                disabled={!pdpActive || pdpLoading}
                 onClick={handleDeactivatePDP}
               >
                 Deactivate PDP
