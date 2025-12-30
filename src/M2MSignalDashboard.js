@@ -207,6 +207,7 @@ export default function M2MSignalDashboard() {
 
     // Refresh snapshot after action
     setTimeout(fetchAll, 1500);
+    setTimeout(fetchAll, 3500);
   };
 
   const handleDeactivatePDP = async () => {
