@@ -274,8 +274,8 @@ export default function M2MSignalDashboard() {
                   />
                   <YAxis
                     domain={[
-                      (min) => Math.floor(min - 5),
-                      (max) => Math.ceil(max + 5),
+                      (min) => Math.floor(min - 1),
+                      (max) => Math.ceil(max + 1),
                     ]}
                     unit=" dB"
                   />
