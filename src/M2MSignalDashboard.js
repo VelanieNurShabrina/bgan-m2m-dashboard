@@ -195,24 +195,44 @@ export default function M2MSignalDashboard() {
       });
     } catch (err) {
       alert("❌ PDP activation error");
+      setPdpLoading(false);
+      return;
     }
 
-    // polling PDP sampai IP muncul
+    let attempts = 0;
+    const MAX_ATTEMPTS = 6; // ~9 detik
+
     const poll = async () => {
-      const res = await fetch(`${BASE_URL}/pdp-status`, {
-        headers: { "ngrok-skip-browser-warning": "true" },
-      });
-      const data = await res.json();
+      attempts++;
 
-      setPdpActive(data.pdp_active);
-      setPdpIP(data.ip || null);
+      try {
+        const res = await fetch(`${BASE_URL}/pdp-status`, {
+          headers: { "ngrok-skip-browser-warning": "true" },
+        });
+        const data = await res.json();
 
-      if (data.ip) {
+        // ✅ FIX UTAMA ADA DI SINI
+        const active = data.pdp_active === true || !!data.ip;
+
+        setPdpActive(active);
+        setPdpIP(data.ip || null);
+
+        // stop polling kalau IP sudah ada
+        if (data.ip) {
+          setPdpLoading(false);
+          return;
+        }
+
+        // safety stop
+        if (attempts >= MAX_ATTEMPTS) {
+          setPdpLoading(false);
+          return;
+        }
+
+        setTimeout(poll, 1500);
+      } catch (err) {
         setPdpLoading(false);
-        return;
       }
-
-      setTimeout(poll, 1500);
     };
 
     poll();
