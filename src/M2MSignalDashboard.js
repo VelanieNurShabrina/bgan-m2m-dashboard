@@ -277,6 +277,7 @@ export default function M2MSignalDashboard() {
                       (min) => Math.floor(min - 1),
                       (max) => Math.ceil(max + 1),
                     ]}
+                    tickFormatter={(v) => Math.round(v)}
                     unit=" dB"
                   />
                   <Tooltip
