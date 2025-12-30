@@ -256,6 +256,8 @@ export default function M2MSignalDashboard() {
     }, 2000);
   };
 
+  const isPdpReallyActive = pdpActive || !!pdpIP;
+
   // =============================
   //  UI
   // =============================
@@ -428,7 +430,7 @@ export default function M2MSignalDashboard() {
             <div className="d-flex gap-2">
               <button
                 className="btn btn-success btn-sm"
-                disabled={pdpActive || pdpLoading}
+                disabled={isPdpReallyActive || pdpLoading}
                 onClick={handleActivatePDP}
               >
                 <FaSyncAlt className={`me-2 ${pdpLoading ? "spin" : ""}`} />
@@ -437,7 +439,7 @@ export default function M2MSignalDashboard() {
 
               <button
                 className="btn btn-outline-danger btn-sm"
-                disabled={!pdpActive || pdpLoading}
+                disabled={!isPdpReallyActive || pdpLoading}
                 onClick={handleDeactivatePDP}
               >
                 Deactivate PDP
