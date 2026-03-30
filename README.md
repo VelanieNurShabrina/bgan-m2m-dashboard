@@ -1,70 +1,119 @@
-# Getting Started with Create React App
+# 📊 BGAN M2M Monitoring Dashboard (Frontend)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a frontend dashboard for monitoring BGAN M2M communication in real-time.
+It visualizes signal data, device information, network status, and PDP connection using data from the backend API.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### 📡 Signal Monitoring
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* Display real-time signal strength
+* Visualize signal history in chart form
+* Auto-refresh data with configurable interval
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🛰️ Device & Network Information
 
-### `npm test`
+* Display satellite information (ID & name)
+* Display IMEI and IMSI
+* Show network registration status (home, roaming, etc.)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🔗 PDP & Connection Monitoring
 
-### `npm run build`
+* Display PDP status (active / inactive)
+* Show assigned IP address
+* Activate PDP connection
+* Deactivate PDP connection
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 📶 APN Configuration
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* Display APN profiles
+* Configure APN (APN name, username, password)
+* Save APN settings via backend API
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## ⚙️ System Features
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Real-time data fetching from backend API
+* Auto polling mechanism (interval-based)
+* Responsive dashboard layout
+* Integration with BGAN backend system
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🧩 Tech Stack
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* React.js
+* JavaScript
+* REST API (Flask backend)
+* Vercel (deployment)
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 📂 Project Structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* `src/` → Main application logic
+* `public/` → Static assets
+* `package.json` → Dependencies & scripts
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## ▶️ How to Run
 
-### Analyzing the Bundle Size
+1. Install dependencies:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm install
+```
 
-### Making a Progressive Web App
+2. Run development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm start
+```
 
-### Advanced Configuration
+3. Open in browser:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
+http://localhost:3000
+```
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🔌 Backend Integration
 
-### `npm run build` fails to minify
+This frontend communicates with backend API endpoints such as:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* `/api/m2m/signal`
+* `/api/m2m/signal-history`
+* `/api/m2m/network`
+* `/api/m2m/satellite`
+* `/api/m2m/imei`
+* `/api/m2m/imsi`
+* `/api/m2m/apn`
+* `/api/m2m/pdp-status`
+* `/api/m2m/pdp-activate`
+* `/api/m2m/pdp-deactivate`
+
+---
+
+## 🌐 Live Demo
+
+👉 https://bgan-m2m-dashboard.vercel.app
+
+---
+
+## 🧠 Notes
+
+* This dashboard depends on backend availability
+* Uses polling to update real-time data
+* Designed for monitoring BGAN modem via AT Commands system
+
+---
+
+## 👩‍💻 Author
+
+Velanie Nur Shabrina
+Computer Engineering
