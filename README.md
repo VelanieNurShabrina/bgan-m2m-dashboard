@@ -1,32 +1,32 @@
-# 📊 BGAN M2M Monitoring Dashboard (Frontend)
+# BGAN M2M Monitoring Dashboard (Frontend)
 
 This project is a frontend dashboard for monitoring BGAN M2M communication in real-time.
 It visualizes signal data, device information, network status, and PDP connection using data from the backend API.
 
 ---
 
-## 🚀 Features
+## Features
 
-### 📡 Signal Monitoring
+### Signal Monitoring
 
 * Display real-time signal strength
 * Visualize signal history in chart form
 * Auto-refresh data with configurable interval
 
-### 🛰️ Device & Network Information
+### Device & Network Information
 
 * Display satellite information (ID & name)
 * Display IMEI and IMSI
 * Show network registration status (home, roaming, etc.)
 
-### 🔗 PDP & Connection Monitoring
+### PDP & Connection Monitoring
 
 * Display PDP status (active / inactive)
 * Show assigned IP address
 * Activate PDP connection
 * Deactivate PDP connection
 
-### 📶 APN Configuration
+### APN Configuration
 
 * Display APN profiles
 * Configure APN (APN name, username, password)
@@ -34,7 +34,7 @@ It visualizes signal data, device information, network status, and PDP connectio
 
 ---
 
-## ⚙️ System Features
+## System Features
 
 * Real-time data fetching from backend API
 * Auto polling mechanism (interval-based)
@@ -43,7 +43,7 @@ It visualizes signal data, device information, network status, and PDP connectio
 
 ---
 
-## 🧩 Tech Stack
+## Tech Stack
 
 * React.js
 * JavaScript
@@ -52,7 +52,7 @@ It visualizes signal data, device information, network status, and PDP connectio
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 * `src/` → Main application logic
 * `public/` → Static assets
@@ -60,7 +60,7 @@ It visualizes signal data, device information, network status, and PDP connectio
 
 ---
 
-## ▶️ How to Run
+## How to Run
 
 1. Install dependencies:
 
@@ -82,7 +82,7 @@ http://localhost:3000
 
 ---
 
-## 🔌 Backend Integration
+## Backend Integration
 
 This frontend communicates with backend API endpoints such as:
 
@@ -99,13 +99,13 @@ This frontend communicates with backend API endpoints such as:
 
 ---
 
-## 🌐 Live Demo
+## Live Demo
 
-👉 https://bgan-m2m-dashboard.vercel.app
+https://bgan-m2m-dashboard.vercel.app
 
 ---
 
-## 🧠 Notes
+## Notes
 
 * This dashboard depends on backend availability
 * Uses polling to update real-time data
@@ -113,7 +113,7 @@ This frontend communicates with backend API endpoints such as:
 
 ---
 
-## 👩‍💻 Author
+## Author
 
 Velanie Nur Shabrina
 Computer Engineering
