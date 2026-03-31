@@ -116,4 +116,3 @@ https://bgan-m2m-dashboard.vercel.app
 ## Author
 
 Velanie Nur Shabrina
-Computer Engineering
