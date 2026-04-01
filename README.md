@@ -104,7 +104,7 @@ This frontend communicates with backend API endpoints such as:
 https://bgan-m2m-dashboard.vercel.app
 
 ---
-## 📸 Dashboard Preview
+## Dashboard Preview
 
 ![BGAN Dashboard](Dashboard%20BGAN.jpeg)
 
