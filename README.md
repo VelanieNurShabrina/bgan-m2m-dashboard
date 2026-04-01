@@ -106,7 +106,7 @@ https://bgan-m2m-dashboard.vercel.app
 ---
 ## Dashboard Preview
 
-![BGAN Dashboard](Dashboard%20BGAN.jpeg)
+![BGAN Dashboard](Dashboard%20bgan.jpeg)
 
 ---
 
