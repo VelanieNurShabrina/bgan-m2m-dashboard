@@ -1,7 +1,18 @@
 # BGAN M2M Monitoring Dashboard (Frontend)
 
-This project is a frontend dashboard for monitoring BGAN M2M communication in real-time.
-It visualizes signal data, device information, network status, and PDP connection using data from the backend API.
+This project is a web-based dashboard for monitoring BGAN M2M communication in real-time. It visualizes signal data, device information, network status, and PDP connection through integration with a backend service.
+
+---
+
+## Live Demo
+
+https://bgan-m2m-dashboard.vercel.app
+
+---
+
+## Dashboard Preview
+
+![BGAN Dashboard](Dashboard%20bgan.jpeg)
 
 ---
 
@@ -32,14 +43,11 @@ It visualizes signal data, device information, network status, and PDP connectio
 * Configure APN (APN name, username, password)
 * Save APN settings via backend API
 
----
+### Dashboard
 
-## System Features
-
-* Real-time data fetching from backend API
-* Auto polling mechanism (interval-based)
+* Real-time data updates
+* Interactive visualization
 * Responsive dashboard layout
-* Integration with BGAN backend system
 
 ---
 
@@ -49,36 +57,6 @@ It visualizes signal data, device information, network status, and PDP connectio
 * JavaScript
 * REST API (Flask backend)
 * Vercel (deployment)
-
----
-
-## Project Structure
-
-* `src/` → Main application logic
-* `public/` → Static assets
-* `package.json` → Dependencies & scripts
-
----
-
-## How to Run
-
-1. Install dependencies:
-
-```bash
-npm install
-```
-
-2. Run development server:
-
-```bash
-npm start
-```
-
-3. Open in browser:
-
-```
-http://localhost:3000
-```
 
 ---
 
@@ -99,22 +77,31 @@ This frontend communicates with backend API endpoints such as:
 
 ---
 
-## Live Demo
+## How to Run
 
-https://bgan-m2m-dashboard.vercel.app
+```bash
+npm install
+npm start
+```
+
+Open in browser:
+http://localhost:3000
 
 ---
-## Dashboard Preview
 
-![BGAN Dashboard](Dashboard%20bgan.jpeg)
+## Project Structure
+
+* `src/` → Main application logic
+* `components/` → UI components (charts, controls, panels)
+* `services/` → API communication
+* `public/` → Static assets
 
 ---
-
 
 ## Notes
 
-* This dashboard depends on backend availability
-* Uses polling to update real-time data
+* Requires backend service to function properly
+* Uses polling mechanism for real-time updates
 * Designed for monitoring BGAN modem via AT Commands system
 
 ---
